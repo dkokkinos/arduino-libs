@@ -21,34 +21,44 @@ int R6 = 3;
 int R7 = 8;
 int R8 = 5;
 
+uint8_t questionmark[8][8] = {
+  { LOW, LOW, HIGH, HIGH, HIGH, HIGH, LOW, LOW },
+  { LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW },
+  { LOW, LOW, LOW, LOW, LOW, HIGH, HIGH, LOW },
+  { LOW, LOW, LOW, LOW, HIGH, HIGH, LOW, LOW },
+  { LOW, LOW, LOW, HIGH, HIGH, LOW, LOW, LOW },
+  { LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW },
+  { LOW, LOW, LOW, HIGH, HIGH, LOW, LOW, LOW },
+  { LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW },
+};
+
+uint8_t smile[8][8] = {
+  { LOW, LOW, HIGH, HIGH, HIGH, HIGH, LOW, LOW },
+  { LOW, HIGH, LOW, LOW, LOW, LOW, HIGH, LOW },
+  { HIGH, LOW, HIGH, LOW, LOW, HIGH, LOW, HIGH },
+  { HIGH, LOW, LOW, LOW, LOW, LOW, LOW, HIGH },
+  { HIGH, LOW, HIGH, LOW, LOW, HIGH, LOW, HIGH },
+  { HIGH, LOW, LOW, HIGH, HIGH, LOW, LOW, HIGH },
+  { LOW, HIGH, LOW, LOW, LOW, LOW, HIGH, LOW },
+  { LOW, LOW, HIGH, HIGH, HIGH, HIGH, LOW, LOW },
+};
+
 void setup() {
-
-  Serial.begin(9600);
-
-  uint8_t row[8] = {
-    R1, R2, R3, R4, R5, R6, R7, R8
-  };
-
-  uint8_t col[8] = {
-    C1, C2, C3, C4, C5, C6, C7, C8
-  };
-
+  uint8_t row[8] = { R1, R2, R3, R4, R5, R6, R7, R8 };
+  uint8_t col[8] = { C1, C2, C3, C4, C5, C6, C7, C8 };
   display.init(1, row, col);
 }
 
+int count = 0;
 void loop() {
 
-  uint8_t image[8][8] = {
-    { LOW, LOW, HIGH, HIGH, HIGH, HIGH, LOW, LOW },
-    { LOW, HIGH, HIGH, LOW, LOW, HIGH, HIGH, LOW },
-    { LOW, LOW, LOW, LOW, LOW, HIGH, HIGH, LOW },
-    { LOW, LOW, LOW, LOW, HIGH, HIGH, LOW, LOW },
-    { LOW, LOW, LOW, HIGH, HIGH, LOW, LOW, LOW },
-    { LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW },
-    { LOW, LOW, LOW, HIGH, HIGH, LOW, LOW, LOW },
-    { LOW, LOW, LOW, LOW, LOW, LOW, LOW, LOW },
-  };
+  if (count == 1000) {
+    display.update(smile);
+  } else if (count == 2000) {
+    display.update(questionmark);
+    count = 0;
+  }
 
-  display.update(image);
   display.refresh();
+  count++;
 }
