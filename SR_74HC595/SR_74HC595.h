@@ -8,10 +8,10 @@
 #endif
 
 
-class SR_74HC595Module {
+class SR_74HC595 {
 public:
 
-  SR_74HC595Module();
+  SR_74HC595();
 
   /* 
     DS = serialPin
@@ -19,9 +19,13 @@ public:
     STCP = storageRegisterClockPin = latch
     SHCP = clockPin = CLK
   */
-  void configure(uint8_t serialPin, uint8_t outputEnablePin, uint8_t storageRegisterClockPin, uint8_t clockPin);
+  void init(uint8_t serialPin, uint8_t outputEnablePin, uint8_t storageRegisterClockPin, uint8_t clockPin);
 
   void write(int value);
+
+  /// @brief Set the Order of bit transfer
+  /// @param bitOrder MSBFIRST or LSBFIRST
+  void setBitOrder(uint8_t bitOrder);
   void flush();
   void hold();
   void enableAutoFlush();
@@ -32,7 +36,7 @@ private:
   uint8_t _outputEnablePin;
   uint8_t _storageRegisterClockPin;
   uint8_t _clockPin;
-
+  uint8_t _bitOrder = MSBFIRST;
   bool _autoFlush;
 };
 

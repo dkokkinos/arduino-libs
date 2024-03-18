@@ -1,9 +1,9 @@
 #include "SR_74HC595.h"
 
-SR_74HC595Module::SR_74HC595Module() {
-}
+SR_74HC595::SR_74HC595() { }
 
-void SR_74HC595Module::configure(uint8_t serialPin, uint8_t outputEnablePin, uint8_t storageRegisterClockPin, uint8_t clockPin) {
+void SR_74HC595::init(uint8_t serialPin, uint8_t outputEnablePin, uint8_t storageRegisterClockPin, uint8_t clockPin)
+{
   _serialPin = serialPin;
   _outputEnablePin = outputEnablePin;
   _storageRegisterClockPin = storageRegisterClockPin;
@@ -18,27 +18,37 @@ void SR_74HC595Module::configure(uint8_t serialPin, uint8_t outputEnablePin, uin
   _autoFlush = false;
 }
 
-void SR_74HC595Module::write(int value) {
+void SR_74HC595::write(int value)
+{
   hold();
 
-  shiftOut(_serialPin, _clockPin, MSBFIRST, value);
+  shiftOut(_serialPin, _clockPin, _bitOrder, value);
 
   if (_autoFlush == true)
     flush();
 }
 
-void SR_74HC595Module::hold() {
+void SR_74HC595::setBitOrder(uint8_t bitOrder)
+{
+  _bitOrder = bitOrder;
+}
+
+void SR_74HC595::hold()
+{
   digitalWrite(_storageRegisterClockPin, LOW);
 }
 
-void SR_74HC595Module::flush() {
+void SR_74HC595::flush()
+{
   digitalWrite(_storageRegisterClockPin, HIGH);
 }
 
-void SR_74HC595Module::enableAutoFlush() {
+void SR_74HC595::enableAutoFlush()
+{
   _autoFlush = true;
 }
 
-void SR_74HC595Module::disableAutoFlush() {
+void SR_74HC595::disableAutoFlush()
+{
   _autoFlush = false;
 }
